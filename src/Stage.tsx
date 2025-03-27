@@ -83,20 +83,18 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
     }
 
     async beforePrompt(userMessage: Message): Promise<Partial<StageResponse<ChatStateType, MessageStateType>>> {
-        const {
+        const { 
             content,
-            promptForId,
-            identity
+            promptForId
         } = userMessage;
+        console.log('beforePrompt()');
 
         let aiNote: string|null  = '';
         let boardRendering: string|null = null;
 
-        console.log(`Identity: ${identity}`);
-
         if (this.currentTurn == '') {
-            // You know, C&L; like the kids play
-            if (['play chutes and ladders', 'play chutes & ladders', 'play a board game', 'play C&L'].filter(phrase => content.toLowerCase().indexOf(phrase) > -1).length > 0) {
+            // You know, C&L, like the kids play
+            if (['play chutes and ladders', 'play chutes & ladders', 'play a board game', 'play C&L', 'play C & L'].filter(phrase => content.toLowerCase().indexOf(phrase) > -1).length > 0) {
                 // Start a game of Chutes and Ladders!
 
                 this.currentTurn = this.userId;
@@ -123,6 +121,7 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
         } else {
             aiNote = null;
         }
+        console.log('end beforePrompt()');
         return {
             stageDirections: aiNote,
             messageState: this.writeMessageState(),
@@ -134,10 +133,12 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
     }
 
     async afterResponse(botMessage: Message): Promise<Partial<StageResponse<ChatStateType, MessageStateType>>> {
+        console.log('afterResponse()');
         let boardRendering: string|null = null;
         if (this.currentTurn != '') {
             boardRendering = this.buildBoard();
         }
+        console.log('end afterResponse()');
 
         return {
             stageDirections: null,
