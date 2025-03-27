@@ -51,6 +51,7 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
         }
 
         this.readMessageState(messageState);
+        console.log('end constructor()');
     }
 
     async load(): Promise<Partial<LoadResponse<InitStateType, ChatStateType, MessageStateType>>> {
@@ -63,10 +64,13 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
     }
 
     async setState(state: MessageStateType): Promise<void> {
+        console.log('setState()');
         this.readMessageState(state ?? {});
+        console.log('end setState()');
     }
 
     async writeMessageState() {
+        console.log('writeMessageState()');
         return {
             currentSpace: this.currentSpace,
             previousSpace: this.previousSpace,
@@ -75,11 +79,13 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
     }
 
     async readMessageState(state: MessageStateType) {
+        console.log('readMessageState()');
         if (state) {
             this.currentSpace = state.currentSpace ?? {};
             this.previousSpace = state.previousSpace ?? {};
             this.currentTurn = state.currentTurn ?? '';
         }
+        console.log('end readMessageState()');
     }
 
     async beforePrompt(userMessage: Message): Promise<Partial<StageResponse<ChatStateType, MessageStateType>>> {
