@@ -25,7 +25,7 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
 
     // Other variables:
     characterIds: string[];
-    userId: string;
+    userId: string = '';
 
     constructor(data: InitialData<InitStateType, ChatStateType, MessageStateType, ConfigType>) {
 
@@ -41,14 +41,18 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
         } = data;
         this.currentSpace = {};
         this.previousSpace = {};
-        this.userId = users[0].name;
+        console.log(`Users:`);
+        console.log(users);
+        console.log('Characters:');
+        console.log(characters);
+        //this.userId = users[0].name;
         this.characterIds = [];
         this.currentTurn = '';
-        for(let character of Object.values(characters)) {
+        /*for(let character of Object.values(characters)) {
             if (this.characterIds.length < 3) {
                 this.characterIds.push(character.name);
             } 
-        }
+        }*/
 
         this.readMessageState(messageState);
     }
