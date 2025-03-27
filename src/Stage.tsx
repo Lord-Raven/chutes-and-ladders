@@ -71,11 +71,7 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
 
     async writeMessageState() {
         console.log('writeMessageState()');
-        return {
-            currentSpace: this.currentSpace,
-            previousSpace: this.previousSpace,
-            currentTurn: this.currentTurn
-        }
+        return {};
     }
 
     async readMessageState(state: MessageStateType) {
