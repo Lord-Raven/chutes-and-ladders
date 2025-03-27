@@ -41,18 +41,14 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
         } = data;
         this.currentSpace = {};
         this.previousSpace = {};
-        console.log(`Users:`);
-        console.log(users);
-        console.log('Characters:');
-        console.log(characters);
-        //this.userId = users[0].name;
+        this.userId = users[Object.keys(users)[0]].name;
         this.characterIds = [];
         this.currentTurn = '';
-        /*for(let character of Object.values(characters)) {
+        for(let character of Object.values(characters)) {
             if (this.characterIds.length < 3) {
                 this.characterIds.push(character.name);
             } 
-        }*/
+        }
 
         this.readMessageState(messageState);
     }
@@ -79,9 +75,11 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
     }
 
     async readMessageState(state: MessageStateType) {
-        this.currentSpace = state.currentSpace ?? {};
-        this.previousSpace = state.previousSpace ?? {};
-        this.currentTurn = state.currentTurn ?? '';
+        if (state) {
+            this.currentSpace = state.currentSpace ?? {};
+            this.previousSpace = state.previousSpace ?? {};
+            this.currentTurn = state.currentTurn ?? '';
+        }
     }
 
     async beforePrompt(userMessage: Message): Promise<Partial<StageResponse<ChatStateType, MessageStateType>>> {
