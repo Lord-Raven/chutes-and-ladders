@@ -126,7 +126,7 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
         console.log('end beforePrompt()');
         return {
             stageDirections: aiNote,
-            messageState: null,
+            messageState: {},
             modifiedMessage: null,
             systemMessage: null,
             error: null,
@@ -144,7 +144,7 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
 
         return {
             stageDirections: null,
-            messageState: null,
+            messageState: {},
             modifiedMessage: null,
             error: null,
             systemMessage: null,
