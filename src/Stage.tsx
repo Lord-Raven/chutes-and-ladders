@@ -112,6 +112,7 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
                 aiNote = `{{user}} wants to play the classic board game, Chutes and Ladders, and {{char}} will agree as they set up the board. The game isn't starting yet, though.`;
                 this.characterIds.forEach(id => this.currentSpace[id] = 1);
                 this.currentSpace[this.userId] = 1;
+                console.log(this.currentSpace);
             }
         } else if (['knock the board', 'throw the board', 'spill the pieces', 'knock over the board', 'bump the board'].filter(phrase => content.toLowerCase().indexOf(phrase) > -1).length > 0) {
             aiNote = `{{user}} has messed up the board; {{char}} will consider this as {{user}} forfeiting--therefore, losing the game. The game is effectively ended.`;
@@ -178,7 +179,7 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
     buildBoard() {
         let result = `---\n`;
         result += `<div style="width: ${this.boardScale}%; padding-bottom: ${this.boardScale}%; border: 4px solid red; border-radius: 4px; position: relative; display: table;">` + 
-                `<div style="width:100%; height: 100%; position: absolute; top: 0; left: 0; background-image: url('https://i.imgur.com/jUxnE9a.png');"></div>`;
+                `<div style="width:100%; height: 100%; position: absolute; top: 0; left: 0; background-image: url('https://i.imgur.com/jUxnE9a.png'); background-size: 100% 100%;"></div>`;
         console.log('buildBoard()');
         console.log(this.currentSpace);
         Object.keys(this.currentSpace).forEach((key, index) => {
