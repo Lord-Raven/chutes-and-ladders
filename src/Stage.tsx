@@ -50,6 +50,9 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
             } 
         }
 
+        console.log(characters);
+        console.log(users);
+
         this.readMessageState(messageState);
         console.log('end constructor()');
     }
@@ -90,26 +93,41 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
     async beforePrompt(userMessage: Message): Promise<Partial<StageResponse<ChatStateType, MessageStateType>>> {
         const { 
             content,
-            promptForId
+            promptForId,
+            anonymizedId
         } = userMessage;
         console.log('beforePrompt()');
+        console.log(`promptForId: ${promptForId}`);
+        console.log(`anonymizeId: ${anonymizedId}`);
 
         let aiNote: string|null  = '';
         let boardRendering: string|null = null;
 
         if (this.currentTurn == '') {
             // You know, C&L, like the kids play
-            if (['play chutes and ladders', 'play chutes & ladders', 'play a board game', 'play C&L', 'play C & L'].filter(phrase => content.toLowerCase().indexOf(phrase) > -1).length > 0) {
+            if (['play', 'playing',].filter(phrase => content.toLowerCase().indexOf(phrase) > -1) && ['chutes and ladders', 'chutes & ladders', 'a board game', 'C&L', 'C & L'].filter(phrase => content.toLowerCase().indexOf(phrase) > -1).length > 0) {
                 // Start a game of Chutes and Ladders!
 
                 this.currentTurn = this.userId;
-                aiNote = `{{user}} wants to play Chutes and Ladders, and {{char}} will play agree as they set up the board. The game hasn't started yet, though.`;
+                aiNote = `{{user}} wants to play the classic board game, Chutes and Ladders, and {{char}} will agree as they set up the board. The game isn't starting yet, though.`;
+                this.characterIds.forEach(id => this.currentSpace[id] = 1);
+                this.currentSpace[this.userId] = 1;
             }
         } else if (['knock the board', 'throw the board', 'spill the pieces', 'knock over the board', 'bump the board'].filter(phrase => content.toLowerCase().indexOf(phrase) > -1).length > 0) {
-            aiNote = `{{user}} has messed up the board; {{char}} will consider this as {{user}} forfeiting--therefore, losing the game.`;
+            aiNote = `{{user}} has messed up the board; {{char}} will consider this as {{user}} forfeiting--therefore, losing the game. The game is effectively ended.`;
             this.currentTurn = '';
         } else {
             // Playing; check if it's player's turn and see if they made their move.
+            if (this.currentTurn == this.userId) {
+                if (['roll di', 'take my turn', 'takes a turn', 'take turn', 'have a go'].filter(phrase => content.toLowerCase().indexOf(phrase) > -1).length > 0) {
+                    // Player is taking a turn.
+                    const move = Math.floor(Math.random() * 6) + 1;
+                    this.currentSpace[this.userId] += move;
+                    aiNote = `{{user}} has taken their turn, rolling a ${move} and advancing to ${this.currentSpace[this.userId]}.`;
+                } else {
+                    aiNote = `{{user}} didn't take their turn. {{char}} should spend some time chatting, bantering, or antagonizing them, but it will remain {{user}}'s turn.`;
+                }
+            }
             const move = true;
 
             if (move) {
