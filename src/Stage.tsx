@@ -69,6 +69,8 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
     async setState(state: MessageStateType): Promise<void> {
         console.log('setState()');
         this.readMessageState(state ?? {});
+        console.log(this.currentTurn);
+        console.log(this.currentSpace);
         console.log('end setState()');
     }
 
@@ -99,6 +101,7 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
         console.log('beforePrompt()');
         console.log(`promptForId: ${promptForId}`);
         console.log(`anonymizeId: ${anonymizedId}`);
+        console.log(`currentTurn: ${this.currentTurn}`);
 
         let aiNote: string|null  = '';
         let boardRendering: string|null = null;
