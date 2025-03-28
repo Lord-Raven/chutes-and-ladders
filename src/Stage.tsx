@@ -163,6 +163,8 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
         }
         console.log('end afterResponse()');
 
+        console.log(this.currentSpace);
+
         return {
             stageDirections: null,
             messageState: this.writeMessageState(),
@@ -177,13 +179,15 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
         let result = `---\n`;
         result += `<div style="width: ${this.boardScale}%; padding-bottom: ${this.boardScale}%; border: 4px solid red; border-radius: 4px; position: relative; display: table;">` + 
                 `<div style="width:100%; height: 100%; position: absolute; top: 0; left: 0; background-image: url('https://i.imgur.com/jUxnE9a.png');"></div>`;
+        console.log('buildBoard()');
+        console.log(this.currentSpace);
         Object.keys(this.currentSpace).forEach((key, index) => {
             console.log(`Index: ${index}, Key: ${key}, Value: ${this.currentSpace[key]}`);
             const space = this.currentSpace[key];
             result += `<div style="width: ${this.boardScale * 0.2}%; height: ${this.boardScale * 0.2}%; position: absolute; left: ${5 + (space % 10) * 9}%; bottom: ${5 + Math.floor(space / 10) * 9}%` +
                     `background-image: url('https://i.imgur.com/L1MLIuJ.png'); background-size: 400% 300%; background-position: 100% 100%; filter: saturate(200%) brightness(70%) hue-rotate(330deg);></div>`;
             });
-            
+        
         result += `</div>`;
         return `${result}`;
     }
