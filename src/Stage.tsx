@@ -69,9 +69,12 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
         console.log('end setState()');
     }
 
-    async writeMessageState() {
+    writeMessageState(): MessageStateType {
         console.log('writeMessageState()');
-        return {};
+        return {currentSpace: this.currentSpace ?? {},
+                previousSpace: this.previousSpace ?? {},
+                currentTurn: this.currentTurn ?? ''
+        };
     }
 
     async readMessageState(state: MessageStateType) {
@@ -126,7 +129,7 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
         console.log('end beforePrompt()');
         return {
             stageDirections: aiNote,
-            messageState: {},
+            messageState: this.writeMessageState(),
             modifiedMessage: null,
             systemMessage: null,
             error: null,
@@ -144,10 +147,10 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
 
         return {
             stageDirections: null,
-            messageState: {},
+            messageState: this.writeMessageState(),
             modifiedMessage: null,
             error: null,
-            systemMessage: null,
+            systemMessage: this.buildBoard(),
             chatState: null
         };
     }
