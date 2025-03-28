@@ -104,10 +104,11 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
         let boardRendering: string|null = null;
 
         if (this.currentTurn == '') {
+            console.log('No game in session');
             // You know, C&L, like the kids play
             if (['play', 'playing',].filter(phrase => content.toLowerCase().indexOf(phrase) > -1) && ['chutes and ladders', 'chutes & ladders', 'a board game', 'C&L', 'C & L'].filter(phrase => content.toLowerCase().indexOf(phrase) > -1).length > 0) {
                 // Start a game of Chutes and Ladders!
-
+                console.log('Starting the game');
                 this.currentTurn = this.userId;
                 aiNote = `{{user}} wants to play the classic board game, Chutes and Ladders, and {{char}} will agree as they set up the board. The game isn't starting yet, though.`;
                 this.characterIds.forEach(id => this.currentSpace[id] = 1);
@@ -115,10 +116,12 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
                 console.log(this.currentSpace);
             }
         } else if (['knock the board', 'throw the board', 'spill the pieces', 'knock over the board', 'bump the board'].filter(phrase => content.toLowerCase().indexOf(phrase) > -1).length > 0) {
+            console.log('end game prematurely');
             aiNote = `{{user}} has messed up the board; {{char}} will consider this as {{user}} forfeiting--therefore, losing the game. The game is effectively ended.`;
             this.currentTurn = '';
         } else {
             // Playing; check if it's player's turn and see if they made their move.
+            console.log('someone\'s turn');
             if (this.currentTurn == this.userId) {
                 if (['roll di', 'take my turn', 'takes a turn', 'take turn', 'have a go'].filter(phrase => content.toLowerCase().indexOf(phrase) > -1).length > 0) {
                     // Player is taking a turn.
