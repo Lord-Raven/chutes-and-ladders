@@ -190,8 +190,8 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
         console.log(this.currentSpace);
         Object.keys(this.currentSpace).forEach((key, index) => {
             console.log(`Index: ${index}, Key: ${key}, Value: ${this.currentSpace[key]}`);
-            const space = this.currentSpace[key];
-            result += `<div style="width: 5%; height: 5%; position: absolute; left: ${5 + (space % 10) * 9}%; bottom: ${5 + Math.floor(space / 10) * 9}%` +
+            const space = this.currentSpace[key] - 1;
+            result += `<div style="width: 4%; height: 4%; position: absolute; ${(Math.floor(space / 10) % 2) == 0 ? 'left' : 'right'}: ${1 + (space % 10) * 9.8 + ((index % 2) * 5)}%; bottom: ${1 + Math.floor(space / 10) * 9.8 + (Math.floor(index / 2) * 5)}%; ` +
                     `background-image: url('https://i.imgur.com/L1MLIuJ.png'); background-size: 400% 300%; background-position: 100% 100%; filter: saturate(200%) brightness(70%) hue-rotate(330deg); zIndex: 10;"></div>`;
             });
         
