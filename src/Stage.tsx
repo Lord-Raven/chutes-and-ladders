@@ -41,12 +41,12 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
         } = data;
         this.currentSpace = {};
         this.previousSpace = {};
-        this.userId = users[Object.keys(users)[0]].name;
+        this.userId = users[Object.keys(users)[0]].anonymizedId;
         this.characterIds = [];
         this.currentTurn = '';
         for(let character of Object.values(characters)) {
             if (this.characterIds.length < 3) {
-                this.characterIds.push(character.name);
+                this.characterIds.push(character.anonymizedId);
             } 
         }
 
@@ -121,7 +121,7 @@ export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateT
             this.currentTurn = '';
         } else {
             // Playing; check if it's player's turn and see if they made their move.
-            console.log('someone\'s turn');
+            console.log(`someone\'s turn: ${this.currentTurn}`);
             if (this.currentTurn == this.userId) {
                 if (['roll di', 'take my turn', 'takes a turn', 'take turn', 'have a go'].filter(phrase => content.toLowerCase().indexOf(phrase) > -1).length > 0) {
                     // Player is taking a turn.
